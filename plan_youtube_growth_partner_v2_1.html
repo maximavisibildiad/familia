@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Mentalidad & Ejecución · Growth Partner</title>
+<style>
+:root {
+  --bg: #09090f;
+  --surface: #111118;
+  --card: #16161f;
+  --card2: #1a1a26;
+  --border: #252535;
+  --border2: #2e2e45;
+  --blue: #5b8cff;
+  --purple: #a855f7;
+  --green: #22d3a5;
+  --gold: #f59e0b;
+  --red: #f87171;
+  --pink: #ec4899;
+  --text: #e8ecf4;
+  --muted: #6b7280;
+  --muted2: #9ca3af;
+  --r: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  padding: 20px 14px 60px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  padding: 28px 0 20px;
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 50%, var(--green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.header p { color: var(--muted2); font-size: 0.85rem; }
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 22px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 9px 18px;
+  border-radius: 30px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface);
+  color: var(--muted2);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all .25s;
+  flex-shrink: 0;
+}
+.tab:hover { border-color: var(--blue); color: var(--text); }
+.tab.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* SECTION TITLE */
+.sec-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-title span { font-size: 1.2rem; }
+.sec-sub {
+  font-size: 0.82rem;
+  color: var(--muted2);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* CARDS GRID */
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+
+/* CHANNEL CARD */
+.ch-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px;
+  transition: border-color .25s, transform .2s;
+  cursor: default;
+}
+.ch-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.ch-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+.ch-icon {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.ch-meta { flex: 1; min-width: 0; }
+.ch-name { font-weight: 800; font-size: 0.95rem; margin-bottom: 3px; }
+.ch-handle { font-size: 0.75rem; color: var(--muted); }
+.badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ch-desc { font-size: 0.82rem; color: var(--muted2); line-height: 1.6; margin-bottom: 12px; }
+.ch-why {
+  background: var(--card2);
+  border-left: 3px solid;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  color: var(--muted2);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.ch-watch {
+  font-size: 0.78rem;
+  color: var(--green);
+  font-weight: 600;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.ch-watch::before { content: '▶'; font-size: 0.65rem; margin-top: 2px; flex-shrink: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.chip {
+  font-size: 0.7rem;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  color: var(--muted2);
+}
+
+/* TONY SECTION */
+.tony-hero {
+  background: linear-gradient(135deg, rgba(245,158,11,.08) 0%, rgba(168,85,247,.06) 100%);
+  border: 1.5px solid rgba(245,158,11,.2);
+  border-radius: var(--r);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+.tony-quote {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.tony-attr { font-size: 0.78rem; color: var(--muted); }
+
+.method-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.method-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: background .2s;
+}
+.method-header:hover { background: var(--card2); }
+.method-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.method-title { font-weight: 700; font-size: 0.95rem; flex: 1; }
+.method-tag { font-size: 0.72rem; color: var(--muted); }
+.chevron { font-size: 0.75rem; color: var(--muted); transition: transform .25s; }
+.method-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s ease, padding .3s;
+}
+.method-body.open { max-height: 1000px; padding: 0 18px 18px; }
+.method-step {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.method-step:last-child { border-bottom: none; }
+.step-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.step-text { font-size: 0.83rem; line-height: 1.6; color: var(--muted2); }
+.step-text strong { color: var(--text); }
+.step-text em { color: var(--green); font-style: normal; font-size: 0.78rem; }
+
+/* ADRIA SECTION */
+.adria-hero {
+  background: linear-gradient(135deg, rgba(91,140,255,.08) 0%, rgba(34,211,165,.06) 100%);
+  border: 1.5px solid rgba(91,140,255,.2);
+  border-radius: var(--r);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+.adria-quote {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.skill-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px;
+}
+.skill-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.skill-icon { font-size: 1.3rem; }
+.skill-title { font-weight: 700; font-size: 0.92rem; }
+.skill-items { list-style: none; }
+.skill-items li {
+  font-size: 0.82rem;
+  color: var(--muted2);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 8px;
+  line-height: 1.5;
+}
+.skill-items li:last-child { border-bottom: none; }
+.skill-items li::before { content: '→'; color: var(--green); font-size: 0.75rem; margin-top: 2px; }
+
+/* RUTINA DIARIA */
+.timeline {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 20px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold), var(--blue), var(--green));
+  border-radius: 2px;
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 16px;
+}
+.tl-dot {
+  position: absolute;
+  left: -23px;
+  top: 8px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  z-index: 1;
+}
+.tl-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color .2s;
+}
+.tl-card:hover { border-color: var(--border2); }
+.tl-time { font-size: 0.72rem; font-weight: 700; margin-bottom: 4px; }
+.tl-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
+.tl-detail { font-size: 0.8rem; color: var(--muted2); line-height: 1.6; }
+.tl-highlight {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+}
+
+/* PLAN SEMANAL */
+.week-table { width: 100%; border-collapse: collapse; }
+.week-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.week-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+.week-table tr:last-child td { border-bottom: none; }
+.week-table tr:hover td { background: var(--card2); }
+.day-name { font-weight: 800; font-size: 0.88rem; color: var(--gold); min-width: 80px; }
+.week-focus { color: var(--text); font-weight: 600; }
+.week-detail { color: var(--muted2); font-size: 0.8rem; margin-top: 2px; }
+.week-source { font-size: 0.75rem; color: var(--blue); font-weight: 600; margin-top: 4px; }
+.week-time { font-size: 0.75rem; color: var(--green); font-weight: 600; white-space: nowrap; padding-left: 8px; }
+
+/* CHECK DIARIO */
+.progress-wrap { margin-bottom: 20px; }
+.progress-bar-bg {
+  background: var(--surface);
+  border-radius: 20px;
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--purple), var(--green));
+  border-radius: 20px;
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+.progress-text { font-size: 0.8rem; color: var(--muted2); }
+.check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+.check-item:hover { border-color: var(--border2); }
+.check-item.done { border-color: var(--green); background: rgba(34,211,165,.05); }
+.check-box {
+  width: 22px; height: 22px;
+  border: 2px solid var(--border2);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  transition: all .2s;
+  margin-top: 1px;
+}
+.check-item.done .check-box { background: var(--green); border-color: var(--green); color: #09090f; }
+.check-label { font-size: 0.83rem; line-height: 1.5; }
+.check-item.done .check-label { color: var(--muted); text-decoration: line-through; }
+.check-cat { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+.reset-btn {
+  background: transparent;
+  border: 1.5px solid var(--border2);
+  color: var(--muted2);
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all .2s;
+}
+.reset-btn:hover { border-color: var(--red); color: var(--red); }
+.motivation-box {
+  background: linear-gradient(135deg, rgba(91,140,255,.07), rgba(168,85,247,.07));
+  border: 1.5px solid rgba(91,140,255,.2);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  margin-top: 16px;
+  font-size: 0.83rem;
+  color: var(--muted2);
+  line-height: 1.7;
+}
+.motivation-box strong { color: var(--blue); }
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🧠 Mentalidad + Ejecución Diaria<br>Sistema Growth Partner</h1>
+  <p>Tony Robbins · Adrià Solà Pastor · Canales Core · Plan semanal · @yosoyjuanpablomesa</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('mentalidad',this)">🧠 Mentalidad</div>
+  <div class="tab" onclick="switchTab('tony',this)">⚡ Tony Robbins</div>
+  <div class="tab" onclick="switchTab('adria',this)">🎙️ Adrià Solà</div>
+  <div class="tab" onclick="switchTab('canales',this)">📺 Canales</div>
+  <div class="tab" onclick="switchTab('rutina',this)">🌅 Rutina Diaria</div>
+  <div class="tab" onclick="switchTab('semana',this)">📅 Plan Semanal</div>
+  <div class="tab" onclick="switchTab('checker',this)">✅ Check Diario</div>
+</div>
+
+<!-- ─── TAB: MENTALIDAD ─── -->
+<div id="mentalidad" class="panel active">
+  <div class="sec-title"><span>🧠</span> El sistema de mentalidad que necesitas</div>
+  <p class="sec-sub">Antes de consumir cualquier video, necesitas entender QUÉ tipo de mentalidad está bloqueando tu ejecución. Aquí está el diagnóstico honesto para alguien construyendo una agencia sola en Cali con clientes en 3 nichos simultáneos.</p>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="method-card">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="method-icon" style="background:rgba(248,113,113,.12);color:#f87171">⚠️</div>
+        <div>
+          <div class="method-title">Los 3 saboteadores reales</div>
+          <div class="method-tag">Lo que te frena sin que lo veas</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-step">
+          <div class="step-num" style="background:rgba(248,113,113,.15);color:#f87171">1</div>
+          <div class="step-text"><strong>Identidad fragmentada:</strong> te ves a ti mismo como "el que hace los ads" no como "el dueño de un sistema de adquisición". Mientras no cambies ese auto-concepto, seguirás reaccionando en vez de dirigir. <em>→ Tony Robbins lo llama "la historia que te cuentas"</em></div>
+        </div>
+        <div class="method-step">
+          <div class="step-num" style="background:rgba(248,113,113,.15);color:#f87171">2</div>
+          <div class="step-text"><strong>Sobrecarga cognitiva sin sistema:</strong> tienes 3 clientes, un reto de 90 días, una comunidad, y aprendizaje técnico constante. Sin un sistema de prioridades, el cerebro entra en modo supervivencia y baja la motivación. <em>→ Adrià lo llama "dispersión de atención"</em></div>
+        </div>
+        <div class="method-step">
+          <div class="step-num" style="background:rgba(248,113,113,.15);color:#f87171">3</div>
+          <div class="step-text"><strong>Motivación por dolor, no por visión:</strong> te mueves cuando hay un cliente insatisfecho o una campaña cayendo, no desde una visión que te jale. Eso agota. <em>→ La solución: construir motivación de "empuje", no de "huida"</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="method-icon" style="background:rgba(34,211,165,.12);color:#22d3a5">🎯</div>
+        <div>
+          <div class="method-title">La mentalidad correcta para agencias</div>
+          <div class="method-tag">El cambio de marco que lo cambia todo</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-step">
+          <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">1</div>
+          <div class="step-text"><strong>De empleado de tu agencia → a arquitecto de sistemas:</strong> tu trabajo no es ejecutar campañas, es construir el sistema que las ejecuta. Cada hora que no delegas es una hora que no está construyendo.</div>
+        </div>
+        <div class="method-step">
+          <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">2</div>
+          <div class="step-text"><strong>Fe activa, no pasiva:</strong> tu fe en Cristo es la base — pero en el negocio, fe sin estructura es deseo. "Encomienda tus obras al Señor y tus planes se establecerán." (Prov 16:3). La planificación intencional ES un acto de fe.</div>
+        </div>
+        <div class="method-step">
+          <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">3</div>
+          <div class="step-text"><strong>El reto de 90 días no es contenido — es identidad:</strong> cada post no es para el algoritmo, es para consolidar quién eres. Robbins dice: "Una decisión real se mide por haber tomado una nueva acción." El reto es la acción que convierte la declaración en realidad.</div>
+        </div>
+        <div class="method-step">
+          <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">4</div>
+          <div class="step-text"><strong>Comunicación = ventas = autoridad:</strong> Adrià lo dice claro: la comunicación es la palanca #1. Aprenderla no es "habilidad blanda", es lo que te separa de cobrar $1,500 a cobrar $5,000 por el mismo trabajo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tony-hero" style="background:linear-gradient(135deg,rgba(34,211,165,.07),rgba(91,140,255,.06));border-color:rgba(34,211,165,.2)">
+    <div class="adria-quote" style="color:var(--green)">"La mentalidad no es lo que piensas — es cómo interpretas lo que te pasa. Cambia la interpretación, cambia el resultado."</div>
+    <div style="font-size:.78rem;color:var(--muted)">Síntesis de Tony Robbins + Adrià Solà Pastor aplicada a Growth Partner</div>
+  </div>
+</div>
+
+<!-- ─── TAB: TONY ROBBINS ─── -->
+<div id="tony" class="panel">
+  <div class="sec-title"><span>⚡</span> Tony Robbins — Métodos exactos para aplicar</div>
+
+  <div class="tony-hero">
+    <div class="tony-quote">"El éxito es 80% psicología y 20% mecánica. La mayoría trabaja solo en el 20%."</div>
+    <div class="tony-attr">Tony Robbins — Esto lo aplicas directamente a tu agencia</div>
+  </div>
+
+  <p class="sec-sub" style="margin-bottom:16px">Tony no es solo motivación. Tiene <strong>métodos concretos</strong> que puedes implementar mañana. Estos son los 4 que más impactan a alguien en tu posición:</p>
+
+  <div class="method-card">
+    <div class="method-header" onclick="toggleMethod(this)">
+      <div class="method-icon" style="background:rgba(245,158,11,.12);color:#f59e0b">🌅</div>
+      <div>
+        <div class="method-title">PRIMING — Rutina matutina de 10 minutos</div>
+        <div class="method-tag">El ritual que reprograma tu estado antes de abrir WhatsApp</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="method-body open">
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:#f59e0b">1</div>
+        <div class="step-text"><strong>Respiración de fuego — 3 min:</strong> sentado con espalda recta, 3 series de 30 respiraciones rápidas por la nariz (inhala-exhala fuertes). Oxigena el cerebro, activa el sistema nervioso. No es opcional, es el "interruptor". <em>→ Haz esto ANTES de ver el celular</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:#f59e0b">2</div>
+        <div class="step-text"><strong>Gratitud radical — 3 min:</strong> cierra los ojos. Piensa en 3 momentos específicos de tu vida por los que estás genuinamente agradecido — uno que involucre a tu hijo, uno con Daniela, uno de tu fe. Siéntelos de verdad, no los listes. <em>→ La gratitud específica rompe el cortisol matutino</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:#f59e0b">3</div>
+        <div class="step-text"><strong>Visualización de 3 victorias — 2 min:</strong> con ojos cerrados, VE a tus 3 tareas más importantes del día ya completadas. Siente cómo te sientes después de hacerlas. No el proceso, el resultado. <em>→ Esto activa el sistema reticular activador: el cerebro busca lo que ya "vio"</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:#f59e0b">4</div>
+        <div class="step-text"><strong>Intención del día — 2 min:</strong> una frase en voz alta que declara quién eres hoy. Ejemplo: "Hoy soy un CEO que construye sistemas, no un ejecutor de tareas. Dios dirige mis pasos." Dicho en voz alta, no pensado. <em>→ El sonido de tu propia voz activa vías neurales distintas al pensamiento</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-header" onclick="toggleMethod(this)">
+      <div class="method-icon" style="background:rgba(168,85,247,.12);color:#a855f7">🗺️</div>
+      <div>
+        <div class="method-title">MÉTODO RPM — Planificación Rápida por Propósito</div>
+        <div class="method-tag">Reemplaza las listas de tareas por mapas de resultados</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="method-body">
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(168,85,247,.15);color:#a855f7">R</div>
+        <div class="step-text"><strong>Result (Resultado):</strong> ¿Qué quiero lograr EXACTAMENTE esta semana? No "trabajar en ARC Dentistry" — sino "tener el flujo de calificación de José respondiendo en menos de 60 segundos configurado y probado". Específico, medible. <em>→ Escríbelo cada domingo noche</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(168,85,247,.15);color:#a855f7">P</div>
+        <div class="step-text"><strong>Purpose (Propósito):</strong> ¿Por qué importa ESTO esta semana? No "porque es mi trabajo" — sino "porque si ARC genera 3 pacientes más, yo facturo comisión y tengo argumentos para subir el base+comisión." El propósito emocional mantiene la energía. <em>→ Sin esto, el resultado es solo una tarea más</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(168,85,247,.15);color:#a855f7">M</div>
+        <div class="step-text"><strong>Massive Action Plan:</strong> lista todas las acciones posibles que te llevarían al resultado. Luego tacha las que no impactan directamente. Quedan máximo 3-5 acciones. Esas son tus únicas prioridades. <em>→ El resto va a una lista "algún día" — no a tu semana</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-header" onclick="toggleMethod(this)">
+      <div class="method-icon" style="background:rgba(91,140,255,.12);color:#5b8cff">🔑</div>
+      <div>
+        <div class="method-title">LOS 6 PILARES — Las necesidades humanas básicas</div>
+        <div class="method-tag">Entiende qué te motiva y qué te frena</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="method-body">
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">1</div>
+        <div class="step-text"><strong>Certeza:</strong> necesitas estructura. El reto de 90 días + el plan semanal te la dan. Sin ella, tu cerebro entra en modo amenaza. <em>→ Protege tu rutina como proteges a tu familia</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">2</div>
+        <div class="step-text"><strong>Variedad:</strong> necesitas novedad. Alternar entre Meta Ads, IA, ventas y contenido semanalmente te la da. No es distracción — es tu sistema nervioso pidiendo variedad controlada.</div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">3</div>
+        <div class="step-text"><strong>Significado:</strong> el reto público, la comunidad "El Manual del Empresario", tu fe. Cuando lo que haces tiene significado más allá del dinero, aguantas el proceso aunque no veas resultados inmediatos.</div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">4</div>
+        <div class="step-text"><strong>Conexión:</strong> Daniela, tu hijo, tu comunidad. El aislamiento del emprendedor es real. Protege estos vínculos porque alimentan tu energía, no te la quitan.</div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">5</div>
+        <div class="step-text"><strong>Crecimiento:</strong> aprender algo nuevo cada semana. Ya lo tienes — pero cuida que sea aplicado, no solo consumido.</div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">6</div>
+        <div class="step-text"><strong>Contribución:</strong> tu fe lo dice claro. El trabajo que haces por tus clientes, la comunidad, el contenido — todo es contribución. Cuando lo pierdas de vista, vuelves a este pilar.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-header" onclick="toggleMethod(this)">
+      <div class="method-icon" style="background:rgba(34,211,165,.12);color:#22d3a5">📺</div>
+      <div>
+        <div class="method-title">QUÉ ver de Tony en YouTube — Playlist exacta</div>
+        <div class="method-tag">No todo su contenido sirve igual para ti</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="method-body">
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">▶</div>
+        <div class="step-text"><strong>Canal principal:</strong> "Tony Robbins" en YouTube. Busca videos en español o con subtítulos. <em>→ Empieza por: "Tony Robbins Morning Priming Exercise" — la guía de 20 min que hace él mismo</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">▶</div>
+        <div class="step-text"><strong>Video obligatorio #1:</strong> "Why We Do What We Do" — TED Talk de Tony. 22 minutos. Entiende los 6 pilares aplicados a negocios. <em>→ Uno de los TED más vistos de la historia. Vélo una vez por semana los primeros 30 días.</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">▶</div>
+        <div class="step-text"><strong>Video obligatorio #2:</strong> "How to Master Your Emotions" — Tony Robbins. 45 min. El más aplicable para los días que la cosa no sale. <em>→ Guárdalo para cuando una campaña falle o pierdas un cliente</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">▶</div>
+        <div class="step-text"><strong>Video obligatorio #3:</strong> "The RPM Life Planning System" — Tony Robbins. Aprende a hacer el mapa semanal en 30 minutos. <em>→ Una vez aplicado, te ahorra 2 horas de semana de trabajo confuso</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(34,211,165,.15);color:#22d3a5">▶</div>
+        <div class="step-text"><strong>Cadencia recomendada:</strong> 1 video de Tony por semana, los domingos noche antes de planificar la semana. No más. Su contenido es denso — más es desperdiciar el impacto. <em>→ Después del video, haz el RPM de la semana</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TAB: ADRIÀ SOLÀ ─── -->
+<div id="adria" class="panel">
+  <div class="sec-title"><span>🎙️</span> Adrià Solà Pastor — El arma que más te falta</div>
+
+  <div class="adria-hero">
+    <div class="adria-quote">"La comunicación no es cómo hablas — es la distancia entre lo que quieres decir y lo que el otro entiende. Reducir esa distancia es el superpoder del siglo XXI."</div>
+    <div style="font-size:.78rem;color:var(--muted)">Adrià Solà Pastor — @AdriaSolaPastor en YouTube · 2.6M suscriptores</div>
+  </div>
+
+  <p class="sec-sub">Adrià tiene 26 años y ha facturado +2M€ enseñando comunicación. Para ti específicamente esto no es "soft skill" — es la diferencia entre cerrar a $1,650 base y cerrar a $3,500. Y es lo que te separa de ser un ejecutor de campañas a ser un Growth Partner que cobra por resultados.</p>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="skill-card">
+      <div class="skill-head">
+        <span class="skill-icon">🎯</span>
+        <span class="skill-title">Por qué Adrià es prioritario para ti</span>
+      </div>
+      <ul class="skill-items">
+        <li>Tus cierres de ventas con ARC, Zenova e Inmobonanza dependen de tu capacidad de comunicar valor, no solo resultados</li>
+        <li>El reto de 90 días es un proyecto de comunicación masiva — cada Reel es un acto de comunicación</li>
+        <li>Tu comunidad "El Manual del Empresario" solo crece si comunicas diferente, no solo diferente que la competencia, sino de forma que conecte emocionalmente</li>
+        <li>Tiene el canal más aplicable en español para emprendedores que venden servicios de alto valor</li>
+        <li>Combina neurociencia, psicología y práctica — no solo motivación vacía</li>
+      </ul>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-head">
+        <span class="skill-icon">📺</span>
+        <span class="skill-title">Qué ver primero en su canal</span>
+      </div>
+      <ul class="skill-items">
+        <li><strong>Empezar por:</strong> "Cómo ser el top 1% en comunicación" — establece el marco mental</li>
+        <li><strong>Obligatorio #2:</strong> "El secreto de las personas que siempre convencen" — aplica directo a tus cierres de ventas</li>
+        <li><strong>Obligatorio #3:</strong> "Cómo hacer que la gente te recuerde" — para tu marca personal y el reto</li>
+        <li><strong>Podcast "A Una Palabra":</strong> escúchalo en el carro o entrenando. Cada episodio es una conversación profunda aplicable a negocios</li>
+        <li><strong>Cadencia:</strong> 1 video por semana, los martes — aplica 1 técnica concreta en tus DMs o llamadas de ventas esa semana</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-header" onclick="toggleMethod(this)">
+      <div class="method-icon" style="background:rgba(91,140,255,.12);color:#5b8cff">🧠</div>
+      <div>
+        <div class="method-title">Las 4 habilidades de Adrià que debes dominar</div>
+        <div class="method-tag">Del video al negocio — con aplicación directa</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="method-body open">
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">1</div>
+        <div class="step-text"><strong>Comunicación de autoridad:</strong> cómo presentas tus resultados a los clientes. No "les estoy corriendo los ads", sino "estoy gestionando su sistema de adquisición automatizado". El lenguaje que usas define el precio que puedes cobrar. <em>→ Aplicar en: propuestas, reportes, conversaciones de renovación</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">2</div>
+        <div class="step-text"><strong>Storytelling que vende:</strong> cada Reel de tu reto de 90 días es una historia. Adrià enseña la estructura exacta: gancho → conflicto → transformación → llamada a la acción. Más efectivo que cualquier plantilla de contenido. <em>→ Aplicar en: Reels, captions, mensajes de cierre</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">3</div>
+        <div class="step-text"><strong>Disciplina cognitiva:</strong> Adrià fue top 1% en la universidad aprendiendo 5 idiomas en un año. Su sistema de aprendizaje es aplicable directamente a cómo estudias Meta Ads, GHL o IA. No consumes info, la estructuras y la aplicas en 48 horas. <em>→ Aplicar en: cómo procesas los videos de estudio cada semana</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(91,140,255,.15);color:#5b8cff">4</div>
+        <div class="step-text"><strong>Construcción de marca personal:</strong> tiene +10 millones de personas en todas sus redes. Entiende qué lo hizo crecer: consistencia de mensaje + especificidad de nicho + comunicación emocional. Esto es exactamente lo que necesita @yosoyjuanpablomesa. <em>→ Aplicar en: estrategia del reto de 90 días, identidad de marca</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-header" onclick="toggleMethod(this)">
+      <div class="method-icon" style="background:rgba(236,72,153,.12);color:#ec4899">✍️</div>
+      <div>
+        <div class="method-title">Ejercicio semanal de Adrià para tu reto</div>
+        <div class="method-tag">La práctica concreta que te hace crecer como comunicador</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="method-body">
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(236,72,153,.15);color:#ec4899">1</div>
+        <div class="step-text"><strong>El "diario de comunicación":</strong> cada semana, después de una llamada de ventas o un video publicado, escribe: ¿Qué quise comunicar? ¿Qué entendió el otro? ¿La distancia fue grande o pequeña? <em>→ 10 min cada viernes noche</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(236,72,153,.15);color:#ec4899">2</div>
+        <div class="step-text"><strong>El "1 frase de claridad":</strong> cada mañana, antes de cualquier comunicación, define en UNA frase qué quieres que la otra persona piense/sienta/haga después de hablar contigo. <em>→ Aplica en reuniones con clientes, en Reels, en mensajes de cierre</em></div>
+      </div>
+      <div class="method-step">
+        <div class="step-num" style="background:rgba(236,72,153,.15);color:#ec4899">3</div>
+        <div class="step-text"><strong>El "test de la abuela":</strong> si tu propuesta de valor no la puede entender alguien fuera de tu industria en 10 segundos, está demasiado técnica. Simplifica hasta que sea irresistible, no impresionante. <em>→ Aplica en tus propuestas a nuevos clientes</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TAB: CANALES ─── -->
+<div id="canales" class="panel">
+  <div class="sec-title"><span>📺</span> Los canales que estudias con propósito</div>
+  <p class="sec-sub">No son para ver cuando hay tiempo. Cada canal tiene un rol específico en tu sistema de Growth Partner. Si no sabes por qué estás viendo algo, no lo veas.</p>
+  <div class="grid-2" id="channelsContainer"></div>
+</div>
+
+<!-- ─── TAB: RUTINA DIARIA ─── -->
+<div id="rutina" class="panel">
+  <div class="sec-title"><span>🌅</span> Rutina diaria de ejecución</div>
+  <p class="sec-sub">Esta no es una rutina de productividad genérica. Es la secuencia específica para alguien que gestiona 3 clientes activos, produce contenido diario, y estudia para crecer la agencia — todo sin quemarse.</p>
+
+  <div class="timeline" id="timelineContainer"></div>
+
+  <div class="tony-hero" style="margin-top:4px">
+    <div class="tony-quote" style="font-size:.95rem">"La disciplina no es restricción — es la libertad de no tener que decidir cada mañana qué harás. Ya lo decidiste."</div>
+    <div class="tony-attr">Principio de Tony Robbins aplicado a tu sistema diario</div>
+  </div>
+</div>
+
+<!-- ─── TAB: PLAN SEMANAL ─── -->
+<div id="semana" class="panel">
+  <div class="sec-title"><span>📅</span> Plan semanal de estudio y ejecución</div>
+  <p class="sec-sub">5–7 horas de aprendizaje intencional distribuidas para que cada día tenga un propósito claro y una acción concreta. El viernes NO consumes — solo produces.</p>
+  <div style="overflow-x:auto">
+    <table class="week-table" id="weekTableContainer"></table>
+  </div>
+</div>
+
+<!-- ─── TAB: CHECKER ─── -->
+<div id="checker" class="panel">
+  <div class="sec-title"><span>✅</span> Check de ejecución diaria</div>
+  <p class="sec-sub">Marca cada bloque cuando lo completes. La constancia del 80% sostenida es mejor que la perfección del 100% abandonada a la semana 2.</p>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progBar" style="width:0%"></div></div>
+    <div class="progress-text" id="progText">0 / 0 completados</div>
+  </div>
+  <div class="check-grid" id="checkGrid"></div>
+  <button class="reset-btn" onclick="resetCheck()">↺ Nuevo día</button>
+  <div class="motivation-box" id="motivBox">
+    <strong>💬 Recuerda hoy:</strong> "No se trata de alcanzar el objetivo. Se trata de en quién te conviertes en el proceso." — Tony Robbins
+  </div>
+</div>
+
+<script>
+// ─── DATOS ───
+const channels = [
+  {
+    icon:'⚡', iconBg:'rgba(245,158,11,.15)', iconColor:'#f59e0b',
+    name:'Tony Robbins', handle:'@TonyRobbins', badgeText:'MENTALIDAD #1', badgeColor:'#f59e0b', badgeBg:'rgba(245,158,11,.12)',
+    borderColor:'rgba(245,158,11,.35)',
+    desc:'El mayor referente mundial en psicología de rendimiento. Para ti no es motivación — es el sistema de Priming y RPM que te da estructura mental para ejecutar sin depender del estado de ánimo.',
+    why:'Aplica: Priming cada mañana + RPM cada domingo noche. Sin estos dos rituales, todo lo demás es inconsistente.',
+    watch:'Empieza por su TED "Why We Do What We Do" + video de Priming en su canal oficial',
+    chips:['Priming', 'RPM', 'Psicología de alto rendimiento', 'Creencias limitantes']
+  },
+  {
+    icon:'🎙️', iconBg:'rgba(91,140,255,.15)', iconColor:'#5b8cff',
+    name:'Adrià Solà Pastor', handle:'@AdriaSolaPastor', badgeText:'COMUNICACIÓN #1', badgeColor:'#5b8cff', badgeBg:'rgba(91,140,255,.12)',
+    borderColor:'rgba(91,140,255,.35)',
+    desc:'El comunicador #1 de habla hispana. 2.6M suscriptores, 26 años, +2M€ facturados. Su método de comunicación es lo que te permite cerrar más, cobrar más y construir una marca que la gente recuerde.',
+    why:'Aplica: su framework de storytelling a tus Reels del reto de 90 días + técnicas de cierre en tus llamadas con nuevos prospectos.',
+    watch:'Empieza por: "El secreto de las personas que siempre convencen" + Podcast "A Una Palabra"',
+    chips:['Storytelling', 'Comunicación de ventas', 'Marca personal', 'Disciplina cognitiva']
+  },
+  {
+    icon:'💰', iconBg:'rgba(34,211,165,.15)', iconColor:'#22d3a5',
+    name:'Cris Urzua', handle:'@CrisUrzua', badgeText:'VENTAS CORE', badgeColor:'#22d3a5', badgeBg:'rgba(34,211,165,.12)',
+    borderColor:'rgba(34,211,165,.25)',
+    desc:'Mejor referente hispano en ventas consultivas y cierre de alto valor. Aplica directamente a tus cierres con ARC Dentistry y Zenova.',
+    why:'Aplica: su sistema de manejo de objeciones en tus llamadas de prospección. Practica un script de cierre en voz alta cada martes.',
+    watch:'"Cómo cerrar una venta sin parecer vendedor" + "Las 3 objeciones que siempre escucharás"',
+    chips:['Cierre de ventas', 'Objeciones', 'Ventas B2B', 'Scripts']
+  },
+  {
+    icon:'🎯', iconBg:'rgba(168,85,247,.15)', iconColor:'#a855f7',
+    name:'Vilma Núñez', handle:'@VilmaNunez', badgeText:'AGENCIA CORE', badgeColor:'#a855f7', badgeBg:'rgba(168,85,247,.12)',
+    borderColor:'rgba(168,85,247,.25)',
+    desc:'La mejor referencia hispana en marketing de contenidos para agencias de servicios. Su enfoque en propuesta de valor y autoridad de marca es exactamente lo que necesitas para escalar Growth Partner.',
+    why:'Aplica: su framework de "contenido que vende" en tu estrategia del reto de 90 días.',
+    watch:'"Cómo construir autoridad como agencia" + "El contenido que atrae clientes premium"',
+    chips:['Agencia de servicios', 'Contenido que vende', 'Autoridad de marca', 'LinkedIn B2B']
+  },
+  {
+    icon:'🤖', iconBg:'rgba(34,211,165,.12)', iconColor:'#22d3a5',
+    name:'Nico Schmitz', handle:'@NicoSchmitz', badgeText:'IA + GHL', badgeColor:'#22d3a5', badgeBg:'rgba(34,211,165,.1)',
+    borderColor:'rgba(34,211,165,.2)',
+    desc:'Canal colombiano enfocado en agentes de IA, n8n y GoHighLevel. El más alineado con tu stack técnico actual.',
+    why:'Aplica: su contenido de GHL directamente a las automatizaciones de ARC Dentistry y Zenova que estás construyendo.',
+    watch:'Busca sus videos de "GoHighLevel automatización" + "agentes de IA para agencias"',
+    chips:['Agentes IA', 'n8n', 'GoHighLevel', 'Automatización']
+  },
+  {
+    icon:'📊', iconBg:'rgba(248,113,113,.12)', iconColor:'#f87171',
+    name:'Negocios en Tu Idioma', handle:'@NegociosEnTuIdioma', badgeText:'MINDSET LATAM', badgeColor:'#f87171', badgeBg:'rgba(248,113,113,.1)',
+    borderColor:'rgba(248,113,113,.2)',
+    desc:'El mejor podcast de negocios en español. Luis Ramos entrevista a CEOs y emprendedores de LATAM con casos reales aplicables a tu contexto colombiano.',
+    why:'Aplica: escúchalo mientras caminas o entrenas. No es para tomar notas — es para reconfigurar tu referencia de lo posible.',
+    watch:'Episodios con fundadores de agencias, CEOs de servicios, emprendedores de LATAM',
+    chips:['Entrevistas CEO', 'Modelo de negocio', 'Mentalidad', 'LATAM']
+  },
+];
+
+const timeline = [
+  { time:'6:00–6:15 AM', color:'#f59e0b', title:'🌅 PRIMING de Tony Robbins', detail:'Antes de ver el celular: 3 min respiración de fuego + 3 min gratitud específica + 2 min visualización de victorias + 2 min intención del día en voz alta.', tag:'RITUAL NO NEGOCIABLE', tagBg:'rgba(245,158,11,.12)', tagColor:'#f59e0b' },
+  { time:'6:15–6:30 AM', color:'#a855f7', title:'🙏 Fe + RPM del día', detail:'Devocional o Biblia (10 min). Luego: escribe en papel tu resultado del día, por qué importa, y tus 3 acciones prioritarias. Solo 3. El papel manda, no el Notion.', tag:'FE + CLARIDAD', tagBg:'rgba(168,85,247,.12)', tagColor:'#a855f7' },
+  { time:'6:30–9:30 AM', color:'#5b8cff', title:'⚡ Bloque de trabajo profundo', detail:'Las 3 horas más valiosas del día. SOLO las 3 tareas que escribiste. Sin WhatsApp, sin email, sin redes. Si es día de estudio (lunes, miércoles): el video de YouTube va aquí, con acción anotada.', tag:'MÁXIMA EJECUCIÓN', tagBg:'rgba(91,140,255,.12)', tagColor:'#5b8cff' },
+  { time:'9:30–10:00 AM', color:'#22d3a5', title:'📱 Comunicaciones del día', detail:'Abres WhatsApp. Respondes clientes. Revisas métricas de campañas activas. 30 minutos, no más. Después: cierra las notificaciones hasta el mediodía.', tag:'BANDEJA DE ENTRADA', tagBg:'rgba(34,211,165,.12)', tagColor:'#22d3a5' },
+  { time:'10:00–12:30 PM', color:'#5b8cff', title:'💼 Trabajo de cliente / Contenido', detail:'Segundo bloque de trabajo. Campañas, reportes, construcción de sistemas, grabación de Reels. Si es viernes: SOLO producción de contenido del reto de 90 días.', tag:'CLIENTES + RETO', tagBg:'rgba(91,140,255,.12)', tagColor:'#5b8cff' },
+  { time:'12:30–1:30 PM', color:'#f59e0b', title:'🍽️ Pausa real', detail:'Sin celular de trabajo. Almuerza. Si puedes, 15 min de caminata. El cerebro necesita este corte para mantener calidad cognitiva en la tarde.', tag:'RECARGA OBLIGATORIA', tagBg:'rgba(245,158,11,.1)', tagColor:'#f59e0b' },
+  { time:'1:30–4:30 PM', color:'#a855f7', title:'🏗️ Bloque de construcción de sistemas', detail:'Prospectar nuevos clientes, mejorar automatizaciones GHL, revisar resultados de campañas en profundidad. O reuniones con prospectos/clientes.', tag:'CRECIMIENTO', tagBg:'rgba(168,85,247,.12)', tagColor:'#a855f7' },
+  { time:'4:30–5:00 PM', color:'#22d3a5', title:'📓 Cierre del día', detail:'Escribe en 5 líneas: ¿Completé mis 3 tareas? ¿Qué aprendí hoy? ¿Qué muevo a mañana? Esta "revisión de cierre" es el hábito que más separa a los emprendedores que avanzan de los que corren sin avanzar.', tag:'REFLEXIÓN DIARIA', tagBg:'rgba(34,211,165,.12)', tagColor:'#22d3a5' },
+  { time:'Noche', color:'#5b8cff', title:'👨‍👩‍👦 Fe, familia, recarga', detail:'Sin WhatsApp de trabajo después de las 8 PM. Tiempo con Daniela y tu hijo. Los domingos: noche de fe + RPM semanal con Tony Robbins. Este tiempo NO es pérdida — es el combustible para el día siguiente.', tag:'VIDA QUE IMPORTA', tagBg:'rgba(91,140,255,.1)', tagColor:'#5b8cff' },
+];
+
+const weekData = [
+  { day:'Lunes', color:'#5b8cff', focus:'Meta Ads + Estrategia de clientes', detail:'1 video de Vilma Núñez o Dean Romero. Aplicar 1 insight directo en ARC Dentistry o Zenova esta semana.', source:'Vilma Núñez / Dean Romero', time:'45 min' },
+  { day:'Martes', color:'#22d3a5', focus:'Ventas + Comunicación (Adrià)', detail:'1 video de Adrià Solà Pastor o Cris Urzua. Practicar el script de cierre en voz alta. Aplicar 1 técnica en mensajes de prospección.', source:'Adrià Solà Pastor / Cris Urzua', time:'40 min' },
+  { day:'Miércoles', color:'#a855f7', focus:'IA + Automatización', detail:'1 video de Nico Schmitz. Documentar: ¿Qué automatizo esta semana? Implementar aunque sea 1 cosa.', source:'Nico Schmitz / Lasse Rouhiainen', time:'45 min' },
+  { day:'Jueves', color:'#f59e0b', focus:'Modelo de agencia + Operaciones', detail:'1 video de Vilma o Javier Elices. Conectar con tu modelo base+comisión. ¿Qué proceso optimizo para servir mejor?', source:'Javier Elices / Vilma Núñez', time:'30 min' },
+  { day:'Viernes', color:'#f87171', focus:'🚫 CERO CONSUMO — Solo Producción', detail:'Revisar notas de la semana. El mejor insight → convertirlo en 1 Reel o caption para el reto de 90 días. Cierre semanal escrito.', source:'Tu propio sistema', time:'60 min prod.' },
+  { day:'Sábado', color:'#ec4899', focus:'Mindset + Negocios (libre)', detail:'1 episodio de "Negocios en Tu Idioma" mientras entrenas o caminas. No tomas notas — solo absorbes referencia de lo posible.', source:'Luis Ramos / Dante Gebel', time:'30 min' },
+  { day:'Domingo', color:'#f59e0b', focus:'Fe + Planificación RPM semanal', detail:'1 video de Tony Robbins en la noche. Inmediatamente después: hacer el RPM de la semana (resultado + propósito + acciones). 3 intenciones escritas para el lunes.', source:'Tony Robbins + RPM semanal', time:'45 min' },
+];
+
+const checks = [
+  { label:'Priming (respiración + gratitud + visión)', cat:'🌅 Ritual matutino' },
+  { label:'Devocional o momento de fe', cat:'🙏 Fe' },
+  { label:'RPM del día: resultado + propósito + 3 acciones', cat:'🗺️ Claridad' },
+  { label:'Bloque de trabajo profundo sin interrupciones (3h)', cat:'⚡ Ejecución' },
+  { label:'Avance concreto en cliente activo', cat:'💼 Clientes' },
+  { label:'Video de estudio + 1 acción anotada (si aplica hoy)', cat:'📺 Aprendizaje' },
+  { label:'Contenido del reto publicado o avanzado', cat:'🎬 Reto 90 días' },
+  { label:'Revisar métricas de al menos 1 campaña', cat:'📊 Métricas' },
+  { label:'Cierre del día escrito (5 líneas)', cat:'📓 Reflexión' },
+  { label:'Sin trabajo después de las 8 PM', cat:'🌙 Límite nocturno' },
+];
+
+const quotes = [
+  '"El éxito es 80% psicología y 20% mecánica." — Tony Robbins',
+  '"La comunicación es la distancia entre lo que dices y lo que el otro entiende." — Adrià Solà Pastor',
+  '"El enemigo de la ejecución es la complejidad. Hazlo sencillo, luego actúa masivamente." — Tony Robbins',
+  '"La repetición es la madre de la habilidad. La maestría no es sexy: es constante." — Tony Robbins',
+  '"No se trata de alcanzar el objetivo. Se trata de en quién te conviertes en el proceso." — Tony Robbins',
+  '"Una decisión real se mide por haber tomado una nueva acción." — Tony Robbins',
+  '"Estás a una palabra de cambiarlo todo." — Adrià Solà Pastor',
+  '"Encomienda tus obras al Señor y tus planes se establecerán." — Proverbios 16:3',
+];
+
+// ─── RENDER ───
+function renderChannels() {
+  const c = document.getElementById('channelsContainer');
+  c.innerHTML = channels.map(ch => `
+    <div class="ch-card" style="border-color:${ch.borderColor}">
+      <div class="ch-head">
+        <div class="ch-icon" style="background:${ch.iconBg};color:${ch.iconColor}">${ch.icon}</div>
+        <div class="ch-meta">
+          <div class="ch-name">${ch.name}</div>
+          <div class="ch-handle">${ch.handle}</div>
+        </div>
+        <span class="badge" style="color:${ch.badgeColor};background:${ch.badgeBg}">${ch.badgeText}</span>
+      </div>
+      <p class="ch-desc">${ch.desc}</p>
+      <div class="ch-why" style="border-color:${ch.iconColor}">💡 <strong>Aplica esto:</strong> ${ch.why}</div>
+      <div class="ch-watch">${ch.watch}</div>
+      <div class="chips">${ch.chips.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+function renderTimeline() {
+  const c = document.getElementById('timelineContainer');
+  c.innerHTML = timeline.map(t => `
+    <div class="tl-item">
+      <div class="tl-dot" style="background:${t.color}"></div>
+      <div class="tl-card">
+        <div class="tl-time" style="color:${t.color}">${t.time}</div>
+        <div class="tl-title">${t.title}</div>
+        <div class="tl-detail">${t.detail}</div>
+        <span class="tl-highlight" style="background:${t.tagBg};color:${t.tagColor}">${t.tag}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderWeek() {
+  const t = document.getElementById('weekTableContainer');
+  t.innerHTML = `<thead><tr>
+    <th>Día</th><th>Enfoque</th><th>Qué estudias / haces</th><th>Fuente</th><th>Tiempo</th>
+  </tr></thead><tbody>` +
+  weekData.map(d => `<tr>
+    <td class="day-name" style="color:${d.color}">${d.day}</td>
+    <td><div class="week-focus">${d.focus}</div></td>
+    <td><div class="week-detail">${d.detail}</div></td>
+    <td><div class="week-source">${d.source}</div></td>
+    <td class="week-time">${d.time}</td>
+  </tr>`).join('') + '</tbody>';
+}
+
+let checkState = new Array(checks.length).fill(false);
+function renderChecks() {
+  const c = document.getElementById('checkGrid');
+  c.innerHTML = checks.map((item, i) => `
+    <div class="check-item ${checkState[i]?'done':''}" onclick="toggleCheck(${i})">
+      <div class="check-box">${checkState[i]?'✓':''}</div>
+      <div>
+        <div class="check-label">${item.label}</div>
+        <div class="check-cat">${item.cat}</div>
+      </div>
+    </div>
+  `).join('');
+  const done = checkState.filter(Boolean).length;
+  const pct = Math.round(done/checks.length*100);
+  document.getElementById('progBar').style.width = pct+'%';
+  document.getElementById('progText').textContent = `${done} / ${checks.length} completados hoy (${pct}%)`;
+  const q = quotes[Math.floor(Math.random()*quotes.length)];
+  if(done === checks.length) {
+    document.getElementById('motivBox').innerHTML = `<strong>🔥 ¡Día completo!</strong> Eso es Growth Partner en acción. "${q}"`;
+  }
+}
+function toggleCheck(i) { checkState[i]=!checkState[i]; renderChecks(); }
+function resetCheck() { checkState=new Array(checks.length).fill(false); renderChecks(); }
+
+function toggleMethod(el) {
+  const body = el.nextElementSibling;
+  const chevron = el.querySelector('.chevron');
+  body.classList.toggle('open');
+  chevron.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+function switchTab(id, el) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ─── INIT ───
+renderChannels();
+renderTimeline();
+renderWeek();
+renderChecks();
+</script>
+</body>
+</html>
